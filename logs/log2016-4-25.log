@@ -1,0 +1,25 @@
+21:51:39	POST UsuarioValido
+21:51:40	ErrorError: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+22:4:23	POST UsuarioValido
+22:6:4	POST UsuarioValido
+22:7:28	POST UsuarioValido
+22:8:41	POST UsuarioValido
+22:11:0	POST UsuarioValido
+22:11:33	POST UsuarioValido
+22:12:3	POST UsuarioValido
+22:12:15	POST UsuarioValido
+22:21:35	POST UsuarioValido
+22:21:45	POST UsuarioValido
+23:29:58	POST UsuarioValido
+23:31:7	POST UsuarioValido
+23:31:8	USUARIO CONSULTAODO
+23:35:52	POST UsuarioValido
+23:35:53	USUARIO CONSULTAODO
+23:38:54	POST UsuarioValido
+23:38:55	USUARIO CONSULTAODO
+23:39:36	POST UsuarioValido
+23:39:36	USUARIO CONSULTAODO
+23:46:15	POST UsuarioValido
+23:51:13	POST UsuarioValido
+23:52:24	POST UsuarioValido
+23:55:28	POST UsuarioValido
