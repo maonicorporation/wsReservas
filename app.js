@@ -17,7 +17,8 @@ app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'jade');*/
 
 
-var allowCrossDomain = function(req, res, next) {
+var allowCrossDomain = function(req, res, next)
+{
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -30,8 +31,8 @@ var allowCrossDomain = function(req, res, next) {
       next();
     }
 };
-app.use(allowCrossDomain);
 
+app.use(allowCrossDomain);
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -40,7 +41,8 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' == app.get('env'))
+{
   app.use(express.errorHandler());
 }
 /*
@@ -53,12 +55,20 @@ app.get('/Reservas',function(req,res)
 {
   res.send("Url Maoni para recibir los post de las reservas V2");
 });
+
 app.post('/Reservas',bbdd.addReserva, function(err,data){});
+
+//http://localhost:3000/Reservas/1
+app.get('/Reservas/:IDHOTEL', bbdd.getReservas, function(err,data){});
+
 app.post('/Incidencias',bbdd.addIncidencia, function(err,data){});
+
 app.get('/Usuarios/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValido, function(err,data){});
+
 app.get('/Hoteles/:IDUSUARIO',bbdd.HotelesByUsuario, function(err,data){});
 //app.get('/Incidencias',bbdd.listaIncidenciaByHotel, function(err,data){});
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function()
+{
   console.log('Express server listening on port ' + app.get('port'));
 });

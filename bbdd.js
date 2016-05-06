@@ -17,8 +17,8 @@ var box = new DB({
 });*/
 
 var box = new DB({
-    //host     : '52.16.112.227',
-    host     : 'localhost',
+    host     : '52.16.112.227',
+    //host     : 'localhost',
     user     : 'gomaonis_Aleix',
     password : 'Aleix.2302',
     database : 'gomaonis_maonibd'
@@ -49,13 +49,12 @@ function keyExists (key)
 /**********************************************************************************************************************/
 
 
-exports.addReserva =  function  (req, res,callback)
+exports.addReserva =  function  (req, res, callback)
 {
     utilities.logFile("POST Reservas");
    // console.log(req.body);
     
-    var sentencia = "INSERT INTO reservas set ?";
-    
+    var sentencia = "INSERT INTO reservas set ?";    
     
     box.connect(function(conn, callback)
     {
@@ -87,9 +86,30 @@ exports.addReserva =  function  (req, res,callback)
                 callback (null, JSON.stringify (res));
             }
         ], callback);
-    }, callback);    
+    }, callback); 
+}
+
+exports.getReservas =  function  (req, res,callback)
+{
+    utilities.logFile("GET Reservas by IDHOTEL");
     
+    var sentencia = "SELECT * FROM gomaonis_maonibd.reservas where IDHOTEL = ?"; 
     
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query getReservas")
+                conn.query (sentencia,  [req.params.IDHOTEL], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
 }
 
 exports.addIncidencia =  function  (req, res,callback)
@@ -135,11 +155,8 @@ exports.UsuarioValido =  function  (req, res,callback)
 {
     utilities.logFile("GET UsuarioValido");
     
-   // console.log(req.body);
-    
     var sentencia = "SELECT DESCUSUARIO FROM usuarios where IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
-    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "'"; 
-  
+    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "'";   
     
     box.connect(function(conn, callback)
     {
@@ -158,21 +175,12 @@ exports.UsuarioValido =  function  (req, res,callback)
                     var key = getkey();
                     resp[0].SESSIONKEY = key;
                     KEYS.push(key);
-                    //callback (null, JSON.stringify (resp)); no cal...
-                    //res.send(JSON.stringify (resp));
-                    res.send(resp); //JSON a saco!
-
-                   
+                    res.send(resp);
                 }
                 else
                 {
-                    //callback (null, JSON.parse("{}"));
                     res.send(JSON.parse("{}"));
                 }
-                
-              // callback (null, JSON.stringify (resp));
-              // res.send(JSON.stringify (resp));
-               
             }
         ], callback);
     }, callback);   
