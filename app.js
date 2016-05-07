@@ -58,8 +58,8 @@ app.get('/Reservas',function(req,res)
 
 app.post('/Reservas',bbdd.addReserva, function(err,data){});
 
-//http://localhost:3000/Reservas/1
-app.get('/Reservas/:IDHOTEL', bbdd.getReservas, function(err,data){});
+//http://localhost:3000/Reservas/1/20160301
+app.get('/Reservas/:IDHOTEL/:ENTRADA', bbdd.getReservas, function(err,data){});
 
 app.post('/Incidencias',bbdd.addIncidencia, function(err,data){});
 

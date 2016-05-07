@@ -93,7 +93,7 @@ exports.getReservas =  function  (req, res,callback)
 {
     utilities.logFile("GET Reservas by IDHOTEL");
     
-    var sentencia = "SELECT * FROM gomaonis_maonibd.reservas where IDHOTEL = ?"; 
+    var sentencia = "SELECT * FROM gomaonis_maonibd.reservas where IDHOTEL = ? AND ENTRADA > ? ORDER BY ROWID DESC"; 
     
     box.connect(function(conn, callback)
     {
@@ -101,7 +101,7 @@ exports.getReservas =  function  (req, res,callback)
             function(_, callback)
             {
                 console.log("query getReservas")
-                conn.query (sentencia,  [req.params.IDHOTEL], callback);                    
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.ENTRADA], callback);                    
             },
             function(resp, cb) 
             {
