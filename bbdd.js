@@ -179,7 +179,7 @@ exports.UsuarioValido =  function  (req, res,callback)
                 }
                 else
                 {
-                    res.send(JSON.parse("{}"));
+                    res.send([{"SESSIONKEY": 0}]);
                 }
             }
         ], callback);
