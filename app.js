@@ -61,12 +61,16 @@ app.post('/Reservas',bbdd.addReserva, function(err,data){});
 //http://localhost:3000/Reservas/1/20160301
 app.get('/Reservas/:IDHOTEL/:ENTRADA', bbdd.getReservas, function(err,data){});
 
+app.get('/EncuestasResumen/:IDHOTEL/:FECHA', bbdd.getEncuestasResumen, function(err,data){});
+
 app.post('/Incidencias',bbdd.addIncidencia, function(err,data){});
 
 app.get('/Usuarios/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValido, function(err,data){});
 
 app.get('/Hoteles/:IDUSUARIO',bbdd.HotelesByUsuario, function(err,data){});
 //app.get('/Incidencias',bbdd.listaIncidenciaByHotel, function(err,data){});
+
+app.post('/EncuestaOk',bbdd.addEncuestaOk, function(err,data){});
 
 http.createServer(app).listen(app.get('port'), function()
 {

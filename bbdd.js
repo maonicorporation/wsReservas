@@ -62,6 +62,9 @@ exports.addReserva =  function  (req, res, callback)
             function(_, callback)
             {
                 utilities.logFile("query addReserva");
+                
+                //delete req.body.__proto__;
+                
                 conn.query (sentencia, req.body, function (err)
                 {
                     conn.release();
@@ -110,6 +113,70 @@ exports.getReservas =  function  (req, res,callback)
             }
         ], callback);
     }, callback);   
+}
+
+exports.getEncuestasResumen =  function  (req, res,callback)
+{
+    utilities.logFile("GET EncuestasResumen");
+    
+    var sentencia = "SELECT * FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = ? AND FECHA = ?"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ENCUESTAS_RESUMEN")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.FECHA], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
+//app.post('/EncuestaOk/:IDHOTEL/:IDENCUESTA/:IDRESERVA/:FECHARESPUESTA',bbdd.addEncuestaOk, function(err,data){});
+exports.addEncuestaOk =  function  (req, res, callback)
+{
+    utilities.logFile("POST Reservas");
+   // console.log(req.body);
+    
+    var sentencia = "INSERT INTO encuestaOk set ?";    
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                utilities.logFile("query addEncuestaOk");
+                conn.query (sentencia, req.body, function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {
+                        res.send({"result": "1"});
+
+                        utilities.logFile("encuestaOk guardada");
+                    }
+                    else
+                    {
+                        res.send({"result": "0","err": err});
+
+                        utilities.logFile("Error: " + err);
+                        utilities.logFile("Sentencia: " + sentencia);
+                        utilities.logFile("Body: " + JSON.stringify (req.body)); 
+                    }
+                });
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback); 
 }
 
 exports.addIncidencia =  function  (req, res,callback)
