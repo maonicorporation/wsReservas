@@ -218,6 +218,29 @@ exports.addIncidencia =  function  (req, res,callback)
     }, callback);   
 }
 
+exports.incidenciasLast5 =  function  (req, res,callback)
+{
+    utilities.logFile("GET incidenciasLast5");
+    
+    var sentencia = "select * from gomaonis_maonibd.DETALLE_INCIDENCIA where IDHOTEL = ?  order by FECHACREACION DESC LIMIT 5"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query DETALLE_INCIDENCIA")
+                conn.query (sentencia,  [req.params.IDHOTEL], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
 exports.UsuarioValido =  function  (req, res,callback)
 {
     utilities.logFile("GET UsuarioValido");

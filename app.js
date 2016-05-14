@@ -64,6 +64,7 @@ app.get('/Reservas/:IDHOTEL/:ENTRADA', bbdd.getReservas, function(err,data){});
 app.get('/EncuestasResumen/:IDHOTEL/:FECHA', bbdd.getEncuestasResumen, function(err,data){});
 
 app.post('/Incidencias',bbdd.addIncidencia, function(err,data){});
+app.get('/IncidenciasLast5/:IDHOTEL',bbdd.incidenciasLast5, function(err,data){});
 
 app.get('/Usuarios/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValido, function(err,data){});
 
