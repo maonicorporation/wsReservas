@@ -138,6 +138,30 @@ exports.getEncuestasResumen =  function  (req, res,callback)
     }, callback);   
 }
 
+exports.getEncuestasResumenRango =  function  (req, res,callback)
+{
+    utilities.logFile("GET EncuestasResumenRango");
+    
+    //SELECT sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = 1 AND FECHA >= '2016-01-01' and FECHA <= '2016-12-31'
+    var sentencia = "SELECT sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = ? AND FECHA >= ? and FECHA <= ?"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ENCUESTAS_RESUMEN")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.DESDE, req.params.HASTA], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
 //app.post('/EncuestaOk/:IDHOTEL/:IDENCUESTA/:IDRESERVA/:FECHARESPUESTA',bbdd.addEncuestaOk, function(err,data){});
 exports.addEncuestaOk =  function  (req, res, callback)
 {
