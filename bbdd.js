@@ -246,7 +246,7 @@ exports.incidenciasLast5 =  function  (req, res,callback)
 {
     utilities.logFile("GET incidenciasLast5");
     
-    var sentencia = "select * from gomaonis_maonibd.DETALLE_INCIDENCIA where IDHOTEL = ?  order by FECHACREACION DESC LIMIT 5"; 
+    var sentencia = "select * from gomaonis_maonibd.DETALLE_INCIDENCIA where IDHOTEL = ? order by solucionada ASC, FECHACREACION DESC LIMIT 5"; 
     
     box.connect(function(conn, callback)
     {
@@ -255,6 +255,29 @@ exports.incidenciasLast5 =  function  (req, res,callback)
             {
                 console.log("query DETALLE_INCIDENCIA")
                 conn.query (sentencia,  [req.params.IDHOTEL], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.incidenciasLastRango =  function  (req, res,callback)
+{
+    utilities.logFile("GET incidenciasLast5");
+    
+    var sentencia = "select * from gomaonis_maonibd.DETALLE_INCIDENCIA where IDHOTEL = ? AND FECHACREACION >= ? and FECHACREACION <= ? order by solucionada ASC, FECHACREACION DESC"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query DETALLE_INCIDENCIA")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.DESDE, req.params.HASTA], callback);                    
             },
             function(resp, cb) 
             {
