@@ -242,6 +242,47 @@ exports.addIncidencia =  function  (req, res,callback)
     }, callback);   
 }
 
+xports.updateIncidencia =  function  (req, res,callback)
+{
+    utilities.logFile("PUT Incidencias");
+   // console.log(req.body);
+    
+   
+    var sentencia = "UPDATE Incidencias set ? WHERE ROWID = ?" ;
+    
+   
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query addIncidencia")
+                conn.query (sentencia, [req.body, req.params.ROWID],function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {
+                        
+                        utilities.logFile("Incidencia actualizada");
+                    }
+                    else
+                    {
+                        utilities.logFile("Error" + err);
+                    }
+                });
+                
+                res.send(req.body);
+                
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);   
+}
+
 exports.incidenciasLast5 =  function  (req, res,callback)
 {
     utilities.logFile("GET incidenciasLast5");
