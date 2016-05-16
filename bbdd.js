@@ -17,8 +17,8 @@ var box = new DB({
 });*/
 
 var box = new DB({
-    //host     : '52.16.112.227',
-    host     : 'localhost',
+    host     : '52.16.112.227',
+    //host     : 'localhost',
     user     : 'gomaonis_Aleix',
     password : 'Aleix.2302',
     database : 'gomaonis_maonibd'
@@ -242,7 +242,7 @@ exports.addIncidencia =  function  (req, res,callback)
     }, callback);   
 }
 
-xports.updateIncidencia =  function  (req, res,callback)
+exports.updateIncidencia =  function  (req, res,callback)
 {
     utilities.logFile("PUT Incidencias");
    // console.log(req.body);
