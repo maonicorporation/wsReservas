@@ -67,6 +67,7 @@ app.get('/EncuestasResumenRango/:IDHOTEL/:DESDE/:HASTA', bbdd.getEncuestasResume
 app.post('/Incidencias',bbdd.addIncidencia, function(err,data){});
 app.put('/Incidencias/:ROWID',bbdd.updateIncidencia, function(err,data){});
 
+app.get('/Incidencia/:ROWID',bbdd.incidencia, function(err,data){});
 app.get('/IncidenciasLast5/:IDHOTEL',bbdd.incidenciasLast5, function(err,data){});
 app.get('/IncidenciasRango/:IDHOTEL/:DESDE/:HASTA',bbdd.incidenciasLastRango, function(err,data){});
 

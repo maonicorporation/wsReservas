@@ -17,8 +17,8 @@ var box = new DB({
 });*/
 
 var box = new DB({
-    host     : '52.16.112.227',
-    //host     : 'localhost',
+    //host     : '52.16.112.227',
+    host     : 'localhost',
     user     : 'gomaonis_Aleix',
     password : 'Aleix.2302',
     database : 'gomaonis_maonibd'
@@ -278,6 +278,29 @@ exports.updateIncidencia =  function  (req, res,callback)
             function(res, cb) 
             {
                 callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.incidencia =  function  (req, res,callback)
+{
+    utilities.logFile("GET incidencia");
+    
+    var sentencia = "select * from gomaonis_maonibd.DETALLE_INCIDENCIA where ROWID = ?"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query DETALLE_INCIDENCIA")
+                conn.query (sentencia,  [req.params.ROWID], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
             }
         ], callback);
     }, callback);   
