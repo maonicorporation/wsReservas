@@ -78,6 +78,8 @@ app.get('/Hoteles/:IDUSUARIO',bbdd.HotelesByUsuario, function(err,data){});
 
 app.post('/EncuestaOk',bbdd.addEncuestaOk, function(err,data){});
 
+app.get('/IndicesSatisfaccion/:IDHOTEL/:DESDE/:HASTA',bbdd.indicesSatisfaccion, function(err,data){});
+
 http.createServer(app).listen(app.get('port'), function()
 {
   console.log('Express server listening on port ' + app.get('port'));

@@ -143,7 +143,7 @@ exports.getEncuestasResumenRango =  function  (req, res,callback)
     utilities.logFile("GET EncuestasResumenRango");
     
     //SELECT sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = 1 AND FECHA >= '2016-01-01' and FECHA <= '2016-12-31'
-    var sentencia = "SELECT sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = ? AND FECHA >= ? and FECHA <= ?"; 
+    var sentencia = "SELECT sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO,ifnull(((100.0 * (OK + KO)) / NULLIF(ENVIADAS, NULL)),0) AS RATIO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = ? AND FECHA >= ? and FECHA <= ?"; 
     
     box.connect(function(conn, callback)
     {
@@ -347,6 +347,29 @@ exports.incidenciasLastRango =  function  (req, res,callback)
             {
                 conn.release();
                 res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.indicesSatisfaccion =  function  (req, res,callback)
+{
+    utilities.logFile("GET indicesSatisfaccion");
+    //call INDICES_SATISFACCION (1,'20160501','20160531')
+    var sentencia = "call INDICES_SATISFACCION (?,?,?)"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query INDICES_SATISFACCION")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.DESDE, req.params.HASTA], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp[0]); 
             }
         ], callback);
     }, callback);   
