@@ -70,6 +70,7 @@ app.put('/Incidencias/:ROWID',bbdd.updateIncidencia, function(err,data){});
 app.get('/Incidencia/:ROWID',bbdd.incidencia, function(err,data){});
 app.get('/IncidenciasLast5/:IDHOTEL',bbdd.incidenciasLast5, function(err,data){});
 app.get('/IncidenciasRango/:IDHOTEL/:DESDE/:HASTA',bbdd.incidenciasLastRango, function(err,data){});
+app.get('/IncidenciasPorSemana/:IDHOTEL/:SEMANADESDE/:SEMANAHASTA',bbdd.incidenciasPorSemana, function(err,data){});
 
 app.get('/Usuarios/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValido, function(err,data){});
 
@@ -79,6 +80,7 @@ app.get('/Hoteles/:IDUSUARIO',bbdd.HotelesByUsuario, function(err,data){});
 app.post('/EncuestaOk',bbdd.addEncuestaOk, function(err,data){});
 
 app.get('/IndicesSatisfaccion/:IDHOTEL/:DESDE/:HASTA',bbdd.indicesSatisfaccion, function(err,data){});
+app.get('/IndicesSatisfaccionSemana/:IDHOTEL/:WDESDE/:WHASTA',bbdd.indicesSatisfaccionSemana, function(err,data){});
 
 http.createServer(app).listen(app.get('port'), function()
 {

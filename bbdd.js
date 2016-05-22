@@ -352,6 +352,29 @@ exports.incidenciasLastRango =  function  (req, res,callback)
     }, callback);   
 }
 
+exports.incidenciasPorSemana =  function  (req, res,callback)
+{
+    utilities.logFile("GET incidenciasPorSemana");
+    
+    var sentencia = "select * from CUENTA_QUEJAS_POR_SEMANA where IDHOTEL = ? AND SEMANA >= ? and SEMANA <= ? order by SEMANA,IDTIPO"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query CUENTA_QUEJAS_POR_SEMANA")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.SEMANADESDE, req.params.SEMANAHASTA], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
 exports.indicesSatisfaccion =  function  (req, res,callback)
 {
     utilities.logFile("GET indicesSatisfaccion");
@@ -365,6 +388,28 @@ exports.indicesSatisfaccion =  function  (req, res,callback)
             {
                 console.log("query INDICES_SATISFACCION")
                 conn.query (sentencia,  [req.params.IDHOTEL, req.params.DESDE, req.params.HASTA], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp[0]); 
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.indicesSatisfaccionSemana =  function  (req, res,callback)
+{
+    utilities.logFile("GET indicesSatisfaccion");
+    var sentencia = "call INDICES_SATISFACCION_SEMANA (?,?,?)"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query INDICES_SATISFACCION_SEMANA")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.WDESDE, req.params.WHASTA], callback);                    
             },
             function(resp, cb) 
             {
