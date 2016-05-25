@@ -82,6 +82,8 @@ app.post('/EncuestaOk',bbdd.addEncuestaOk, function(err,data){});
 app.get('/IndicesSatisfaccion/:IDHOTEL/:DESDE/:HASTA',bbdd.indicesSatisfaccion, function(err,data){});
 app.get('/IndicesSatisfaccionSemana/:IDHOTEL/:ANYO/:WDESDE/:WHASTA',bbdd.indicesSatisfaccionSemana, function(err,data){});
 
+app.get('/TopResolutivos/:IDHOTEL/:ANYO',bbdd.topResolutivos, function(err,data){});
+
 http.createServer(app).listen(app.get('port'), function()
 {
   console.log('Express server listening on port ' + app.get('port'));

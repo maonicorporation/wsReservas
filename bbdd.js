@@ -486,3 +486,56 @@ exports.HotelesByUsuario =  function  (req, res,callback)
         ], callback);
     }, callback);   
 }
+
+exports.HotelesByUsuario =  function  (req, res,callback)
+{//app.get('/TopResolutivos/:IDHOTEL/:ANYO',bbdd.topResolutivos, function(err,data){});
+    utilities.logFile("GET Hoteles By Usuario");
+    
+   // console.log(req.body);
+    
+    var sentencia = "call TOP_RESOLUTIVOS (?, ?)"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query HotelesByUsuario")
+                conn.query (sentencia, callback);
+                    
+            },
+            function(resp, cb) 
+            {
+               conn.release();
+                //callback (null, JSON.stringify (resp));
+                //res.send(JSON.stringify (resp));
+                res.send(resp); //JSON a saco!
+                
+               
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.topResolutivos =  function  (req, res,callback)
+{
+    utilities.logFile("GET topResolutivos");
+    
+    var sentencia = "call TOP_RESOLUTIVOS (?, ?)"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query TOP_RESOLUTIVOS")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.ANYO], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp[0]); 
+            }
+        ], callback);
+    }, callback);   
+}
