@@ -401,7 +401,7 @@ exports.indicesSatisfaccion =  function  (req, res,callback)
 exports.indicesSatisfaccionSemana =  function  (req, res,callback)
 {
     utilities.logFile("GET indicesSatisfaccion");
-    var sentencia = "call INDICES_SATISFACCION_SEMANA (?,?,?)"; 
+    var sentencia = "call INDICES_SATISFACCION_SEMANA (?,?,?,?)"; 
     
     box.connect(function(conn, callback)
     {
@@ -409,7 +409,7 @@ exports.indicesSatisfaccionSemana =  function  (req, res,callback)
             function(_, callback)
             {
                 console.log("query INDICES_SATISFACCION_SEMANA")
-                conn.query (sentencia,  [req.params.IDHOTEL, req.params.WDESDE, req.params.WHASTA], callback);                    
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.ANYO, req.params.WDESDE, req.params.WHASTA], callback);                    
             },
             function(resp, cb) 
             {
