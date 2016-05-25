@@ -488,12 +488,12 @@ exports.HotelesByUsuario =  function  (req, res,callback)
 }
 
 exports.HotelesByUsuario =  function  (req, res,callback)
-{//app.get('/TopResolutivos/:IDHOTEL/:ANYO',bbdd.topResolutivos, function(err,data){});
+{
     utilities.logFile("GET Hoteles By Usuario");
     
    // console.log(req.body);
     
-    var sentencia = "call TOP_RESOLUTIVOS (?, ?)"; 
+    var sentencia = "SELECT H.* FROM gomaonis_maonibd.usuarioshoteles U INNER JOIN gomaonis_maonibd.hoteles H on H.IDHOTEL = U.IDHOTEL WHERE U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
     
     box.connect(function(conn, callback)
     {
