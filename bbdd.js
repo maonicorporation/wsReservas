@@ -424,7 +424,7 @@ exports.UsuarioValido =  function  (req, res,callback)
 {
     utilities.logFile("GET UsuarioValido");
     
-    var sentencia = "SELECT DESCUSUARIO FROM usuarios where IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
+    var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
     sentencia += "and PASSWORD = '" + req.params.PASSWORD + "'";   
     
     box.connect(function(conn, callback)
@@ -461,7 +461,7 @@ exports.HotelesByUsuario =  function  (req, res,callback)
     
    // console.log(req.body);
     
-    var sentencia = "SELECT H.* FROM gomaonis_maonibd.usuarioshoteles U INNER JOIN gomaonis_maonibd.hoteles H on H.IDHOTEL = U.IDHOTEL WHERE U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
+    var sentencia = "SELECT E.DESCEMPRESA, H.* FROM gomaonis_maonibd.usuarioshoteles U INNER JOIN gomaonis_maonibd.hoteles H on H.IDHOTEL = U.IDHOTEL INNER JOIN gomaonis_maonibd.empresas E on E.IDEMPRESA = H.IDEMPRESA WHERE U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
   
   
     
@@ -487,31 +487,23 @@ exports.HotelesByUsuario =  function  (req, res,callback)
     }, callback);   
 }
 
-exports.HotelesByUsuario =  function  (req, res,callback)
+exports.IncidenciasNoNotificadas =  function  (req, res,callback)
 {
-    utilities.logFile("GET Hoteles By Usuario");
+    utilities.logFile("GET IncidenciasNoNotificadas");
     
-   // console.log(req.body);
-    
-    var sentencia = "SELECT H.* FROM gomaonis_maonibd.usuarioshoteles U INNER JOIN gomaonis_maonibd.hoteles H on H.IDHOTEL = U.IDHOTEL WHERE U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
+    var sentencia = "select * from INCIDENCIAS_NO_NOTIFICADAS";
     
     box.connect(function(conn, callback)
     {
         cps.seq([
             function(_, callback)
             {
-                console.log("query HotelesByUsuario")
-                conn.query (sentencia, callback);
-                    
+                conn.query (sentencia, callback);                    
             },
             function(resp, cb) 
             {
                conn.release();
-                //callback (null, JSON.stringify (resp));
-                //res.send(JSON.stringify (resp));
-                res.send(resp); //JSON a saco!
-                
-               
+                res.send(resp);
             }
         ], callback);
     }, callback);   
@@ -529,7 +521,7 @@ exports.topResolutivos =  function  (req, res,callback)
             function(_, callback)
             {
                 console.log("query TOP_RESOLUTIVOS")
-                conn.query (sentencia,  [req.params.IDHOTEL, req.params.ANYO], callback);                    
+                conn.query (sentencia,  [req.params.IDEMPRESA, req.params.ANYO], callback);                    
             },
             function(resp, cb) 
             {
