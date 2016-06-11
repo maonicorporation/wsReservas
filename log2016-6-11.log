@@ -1,0 +1,20 @@
+9:52:38	GET UsuarioValido
+9:52:41	GET Hoteles By Usuario
+9:52:41	GET EncuestasResumenRango
+9:52:41	GET incidenciasLast5
+9:52:42	GET topResolutivos
+9:52:43	GET indicesSatisfaccion
+9:53:7	GET Hoteles By Usuario
+9:53:7	GET Reservas by IDHOTEL
+10:3:36	GET UsuarioValido
+10:3:38	GET Hoteles By Usuario
+10:3:38	GET EncuestasResumenRango
+10:3:38	GET incidenciasLast5
+10:3:38	GET topResolutivos
+10:3:39	GET indicesSatisfaccion
+10:4:6	GET Hoteles By Usuario
+10:4:7	GET Reservas by IDHOTEL
+10:4:15	GET Reservas by IDHOTEL
+10:4:29	DELETE RESERVA ROWID: 258
+10:4:29	ErrorError: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ROWID = '258'' at line 1
+10:4:40	GET Reservas by IDHOTEL

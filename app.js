@@ -57,9 +57,11 @@ app.get('/Reservas',function(req,res)
 });
 
 app.post('/Reservas',bbdd.addReserva, function(err,data){});
-
+app.delete('/Reservas/:ROWID',bbdd.deleteReserva, function(err,data){});
+app.put('/Reservas/:ROWID',bbdd.updateReserva, function(err,data){});
 //http://localhost:3000/Reservas/1/20160301
 app.get('/Reservas/:IDHOTEL/:ENTRADA', bbdd.getReservas, function(err,data){});
+
 
 app.get('/EncuestasResumen/:IDHOTEL/:FECHA', bbdd.getEncuestasResumen, function(err,data){});
 app.get('/EncuestasResumenRango/:IDHOTEL/:DESDE/:HASTA', bbdd.getEncuestasResumenRango, function(err,data){});
@@ -85,6 +87,10 @@ app.get('/IndicesSatisfaccionSemana/:IDHOTEL/:ANYO/:WDESDE/:WHASTA',bbdd.indices
 app.get('/TopResolutivos/:IDEMPRESA/:ANYO',bbdd.topResolutivos, function(err,data){});
 
 app.get('/IncidenciasNoNotificadas',bbdd.IncidenciasNoNotificadas, function(err,data){});
+
+app.get('/Origen',bbdd.Origen, function(err,data){});
+
+app.get('/Version',bbdd.Version, function(err,data){});
 
 http.createServer(app).listen(app.get('port'), function()
 {

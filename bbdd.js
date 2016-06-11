@@ -48,6 +48,46 @@ function keyExists (key)
 
 /**********************************************************************************************************************/
 
+exports.Version =  function  (req, res, callback)
+{    
+    res.send("WSRESERVAS V 1.3");
+    callback();
+}
+
+exports.deleteReserva =  function  (req, res, callback)
+{
+    utilities.logFile("DELETE RESERVA ROWID: " + req.params.ROWID);
+   
+    var sentencia = "DELETE from reservas WHERE ROWID = ?" ;
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query deleteReserva")
+                conn.query (sentencia, [req.params.ROWID],function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {                        
+                        utilities.logFile("reserva " + req.params.ROWID + " eliminada");
+                        res.send({"result": "1"});
+                    }
+                    else
+                    {
+                        utilities.logFile("Error" + err);
+                        res.send({"result": "0","err": err});
+                    }
+                });
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);   
+}
 
 exports.addReserva =  function  (req, res, callback)
 {
@@ -90,6 +130,42 @@ exports.addReserva =  function  (req, res, callback)
             }
         ], callback);
     }, callback); 
+}
+
+exports.updateReserva =  function  (req, res,callback)
+{
+    utilities.logFile("PUT Reservas");
+   
+    var sentencia = "UPDATE reservas set ? WHERE ROWID = ?" ;   
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query updateReserva")
+                conn.query (sentencia, [req.body, req.params.ROWID],function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {                        
+                        utilities.logFile("Reserva actualizada");
+                    }
+                    else
+                    {
+                        utilities.logFile("Error" + err);
+                    }
+                });
+                
+                res.send(req.body);
+                
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);   
 }
 
 exports.getReservas =  function  (req, res,callback)
@@ -245,25 +321,20 @@ exports.addIncidencia =  function  (req, res,callback)
 exports.updateIncidencia =  function  (req, res,callback)
 {
     utilities.logFile("PUT Incidencias");
-   // console.log(req.body);
-    
    
     var sentencia = "UPDATE Incidencias set ? WHERE ROWID = ?" ;
-    
-   
     
     box.connect(function(conn, callback)
     {
         cps.seq([
             function(_, callback)
             {
-                console.log("query addIncidencia")
+                console.log("query updateIncidencia")
                 conn.query (sentencia, [req.body, req.params.ROWID],function (err)
                 {
                     conn.release();
                     if (!err)
-                    {
-                        
+                    {                        
                         utilities.logFile("Incidencia actualizada");
                     }
                     else
@@ -482,6 +553,27 @@ exports.HotelesByUsuario =  function  (req, res,callback)
                 res.send(resp); //JSON a saco!
                 
                
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.Origen =  function  (req, res,callback)
+{    
+    var sentencia = "SELECT * FROM gomaonis_maonibd.ORIGEN order by IDORIGEN"; 
+
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                conn.query (sentencia, callback);
+                    
+            },
+            function(resp, cb) 
+            {
+               conn.release();
+                res.send(resp);
             }
         ], callback);
     }, callback);   
