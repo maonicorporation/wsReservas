@@ -50,7 +50,7 @@ function keyExists (key)
 
 exports.Version =  function  (req, res, callback)
 {    
-    res.send("WSRESERVAS V 1.3");
+    res.send("WSRESERVAS V 1.5");
     callback();
 }
 
@@ -220,6 +220,29 @@ exports.getEncuestasResumenRango =  function  (req, res,callback)
     
     //SELECT sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = 1 AND FECHA >= '2016-01-01' and FECHA <= '2016-12-31'
     var sentencia = "SELECT sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO,ifnull(((100.0 * (OK + KO)) / NULLIF(ENVIADAS, NULL)),0) AS RATIO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = ? AND FECHA >= ? and FECHA <= ?"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ENCUESTAS_RESUMEN")
+                conn.query (sentencia,  [req.params.IDHOTEL, req.params.DESDE, req.params.HASTA], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.getEncuestasResumenRangoSinAcumular =  function  (req, res,callback)
+{
+    utilities.logFile("GET EncuestasResumenRango");
+    
+    var sentencia = "SELECT fecha,sum(ENVIADAS) as ENVIADAS, sum(OK) as OK, sum(KO) as KO,ifnull(((100.0 * (OK + KO)) / NULLIF(ENVIADAS, NULL)),0) AS RATIO FROM gomaonis_maonibd.ENCUESTAS_RESUMEN where IDHOTEL = ? AND FECHA >= ? and FECHA <= ? group by fecha order by fecha"; 
     
     box.connect(function(conn, callback)
     {
@@ -496,7 +519,77 @@ exports.UsuarioValido =  function  (req, res,callback)
     utilities.logFile("GET UsuarioValido");
     
     var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
-    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "'";   
+    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOWEBHASTA >= NOW()";   
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query UsuarioValido")
+                conn.query (sentencia, callback);
+                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                if (resp.length == 1)
+                {
+                    var key = getkey();
+                    resp[0].SESSIONKEY = key;
+                    KEYS.push(key);
+                    res.send(resp);
+                }
+                else
+                {
+                    res.send([{"SESSIONKEY": 0}]);
+                }
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.UsuarioValidoIos =  function  (req, res,callback)
+{
+    utilities.logFile("GET UsuarioValido");
+    
+    var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
+    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOIOSHASTA >= NOW()";    
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query UsuarioValido")
+                conn.query (sentencia, callback);
+                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                if (resp.length == 1)
+                {
+                    var key = getkey();
+                    resp[0].SESSIONKEY = key;
+                    KEYS.push(key);
+                    res.send(resp);
+                }
+                else
+                {
+                    res.send([{"SESSIONKEY": 0}]);
+                }
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.UsuarioValidoAndroid =  function  (req, res,callback)
+{
+    utilities.logFile("GET UsuarioValido");
+    
+    var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
+    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOANDROIDHASTA >= NOW()";    
     
     box.connect(function(conn, callback)
     {

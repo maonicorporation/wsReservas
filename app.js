@@ -65,6 +65,7 @@ app.get('/Reservas/:IDHOTEL/:ENTRADA', bbdd.getReservas, function(err,data){});
 
 app.get('/EncuestasResumen/:IDHOTEL/:FECHA', bbdd.getEncuestasResumen, function(err,data){});
 app.get('/EncuestasResumenRango/:IDHOTEL/:DESDE/:HASTA', bbdd.getEncuestasResumenRango, function(err,data){});
+app.get('/getEncuestasResumenRangoSinAcumular/:IDHOTEL/:DESDE/:HASTA', bbdd.getEncuestasResumenRangoSinAcumular, function(err,data){});
 
 app.post('/Incidencias',bbdd.addIncidencia, function(err,data){});
 app.put('/Incidencias/:ROWID',bbdd.updateIncidencia, function(err,data){});
@@ -75,6 +76,8 @@ app.get('/IncidenciasRango/:IDHOTEL/:DESDE/:HASTA',bbdd.incidenciasLastRango, fu
 app.get('/IncidenciasPorSemana/:IDHOTEL/:SEMANADESDE/:SEMANAHASTA',bbdd.incidenciasPorSemana, function(err,data){});
 
 app.get('/Usuarios/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValido, function(err,data){});
+app.get('/UsuariosIos/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValidoIos, function(err,data){});
+app.get('/UsuariosAndroid/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValidoAndroid, function(err,data){});
 
 app.get('/Hoteles/:IDUSUARIO',bbdd.HotelesByUsuario, function(err,data){});
 //app.get('/Incidencias',bbdd.listaIncidenciaByHotel, function(err,data){});
