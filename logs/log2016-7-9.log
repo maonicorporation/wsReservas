@@ -1,0 +1,11 @@
+16:29:45	POST ReservasCli
+16:30:25	query addReservaCli
+16:32:10	Sentencia: INSERT INTO reservas set ?
+16:32:10	Error: Error: ER_BAD_FIELD_ERROR: Unknown column 'SI_ENCUESTA_ENVIADA' in 'field list'
+16:32:10	Body: {"IDRESERVA":3,"IDHOTEL":1,"ENTRADA":"20160505","SALIDA":"20160514","HABITACION":"0123","MAIL_CARDEX":"xxxxx@gmail.com","SI_ENCUESTA_ENVIADA":0,"NOMBRE":"EDUARDO","APELLIDO1":"GONZALEZ","APELLIDO2":"GARCIA","ISO_PAIS":"ES"}
+16:32:32	POST ReservasCli
+16:32:37	query addReservaCli
+16:32:43	Reserva guardada
+16:40:57	PUT ReservasCli
+16:41:20	Reserva actualizada
+16:42:33	DELETE RESERVA ROWID: undefined

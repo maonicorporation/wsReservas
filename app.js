@@ -56,9 +56,15 @@ app.get('/Reservas',function(req,res)
   res.send("Url Maoni para recibir los post de las reservas V2");
 });
 
+
 app.post('/Reservas',bbdd.addReserva, function(err,data){});
 app.delete('/Reservas/:ROWID',bbdd.deleteReserva, function(err,data){});
 app.put('/Reservas/:ROWID',bbdd.updateReserva, function(err,data){});
+
+app.post('/ReservasCli/:KEY',bbdd.addReservaCli, function(err,data){});
+app.delete('/ReservasCli/:KEY/:IDHOTEL/:IDRESERVA',bbdd.deleteReservaCli, function(err,data){});
+app.put('/ReservasCli/:KEY/:IDHOTEL/:IDRESERVA',bbdd.updateReservaCli, function(err,data){});
+
 //http://localhost:3000/Reservas/1/20160301
 app.get('/Reservas/:IDHOTEL/:ENTRADA', bbdd.getReservas, function(err,data){});
 

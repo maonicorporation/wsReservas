@@ -17,8 +17,8 @@ var box = new DB({
 });*/
 
 var box = new DB({
-    //host     : '52.16.112.227',
-    host     : 'localhost',
+    host     : '52.16.112.227',
+    //host     : 'localhost',
     user     : 'gomaonis_Aleix',
     password : 'Aleix.2302',
     database : 'gomaonis_maonibd'
@@ -715,4 +715,135 @@ exports.topResolutivos =  function  (req, res,callback)
             }
         ], callback);
     }, callback);   
+}
+
+
+//Para 3rd party
+
+function verificaKey (key)
+{
+    if (key == '8q806d0fayu') return true;
+    else return false
+}
+
+exports.addReservaCli =  function  (req, res, callback)
+{
+    utilities.logFile("POST ReservasCli");
+
+    if (verificaKey (req.params.KEY))
+    {    
+        var sentencia = "INSERT INTO reservas set ?";
+
+        box.connect(function(conn, callback)
+        {
+            cps.seq([
+                function(_, callback)
+                {
+                    utilities.logFile("query addReservaCli");
+                    
+                    //delete req.body.__proto__;
+                    
+                    conn.query (sentencia, req.body, function (err)
+                    {
+                        conn.release();
+                        if (!err)
+                        {
+                            res.send({"result": "1"});
+
+                            utilities.logFile("Reserva guardada");
+                        }
+                        else
+                        {
+                            res.send({"result": "0","err": err});
+
+                            utilities.logFile("Error: " + err);
+                            utilities.logFile("Sentencia: " + sentencia);
+                            utilities.logFile("Body: " + JSON.stringify (req.body)); 
+                        }
+                    });
+                },
+                function(res, cb) 
+                {
+                    callback (null, JSON.stringify (res));
+                }
+            ], callback);
+        }, callback); 
+    }
+}
+
+exports.updateReservaCli =  function  (req, res,callback)
+{
+    utilities.logFile("PUT ReservasCli");
+   
+    if (verificaKey (req.params.KEY))
+    {  
+        var sentencia = "UPDATE reservas set ? WHERE IDHOTEL = ? and IDRESERVA = ?";
+        
+        box.connect(function(conn, callback)
+        {
+            cps.seq([
+                function(_, callback)
+                {
+                    console.log("query updateReservaCli")
+                    conn.query (sentencia, [req.body, req.params.IDHOTEL, req.params.IDRESERVA],function (err)
+                    {
+                        conn.release();
+                        if (!err)
+                        {                        
+                            utilities.logFile("Reserva actualizada");
+                        }
+                        else
+                        {
+                            utilities.logFile("Error" + err);
+                        }
+                    });
+                    
+                    res.send(req.body);
+                    
+                },
+                function(res, cb) 
+                {
+                    callback (null, JSON.stringify (res));
+                }
+            ], callback);
+        }, callback);
+    }
+}
+
+exports.deleteReservaCli =  function  (req, res, callback)
+{
+    utilities.logFile("DELETE RESERVA ROWID: " + req.params.ROWID);
+   
+    if (verificaKey (req.params.KEY))
+    {  
+        var sentencia = "DELETE from reservas WHERE IDHOTEL = ? and IDRESERVA = ?";
+        
+        box.connect(function(conn, callback)
+        {
+            cps.seq([
+                function(_, callback)
+                {
+                    console.log("query deleteReservaCli")
+                    conn.query (sentencia, [req.params.IDHOTEL, req.params.IDRESERVA],function (err)
+                    {
+                        conn.release();
+                        if (!err)
+                        {                        
+                            utilities.logFile("reserva " + req.params.IDHOTEL + " " + req.params.IDRESERVA + " eliminada");
+                            res.send({"result": "1"});
+                        }
+                        else
+                        {
+                            utilities.logFile("Error" + err);
+                            res.send({"result": "0","err": err});
+                        }
+                    });
+                },
+                function(res, cb) 
+                {
+                    callback (null, JSON.stringify (res));
+                }
+            ], callback);
+        }, callback);
+    }
 }
