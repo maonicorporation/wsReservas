@@ -38,7 +38,7 @@ function keyExists (key)
 
 exports.Version =  function  (req, res, callback)
 {    
-    res.send("WSRESERVAS V 2017 10 03");
+    res.send("WSRESERVAS V 2017 10 03 B");
     callback();
 }
 
@@ -863,4 +863,76 @@ exports.ParametrosMailing =  function  (req, res,callback)
             }
         ], callback);
     }, callback);   
+}
+
+exports.ReservaResetPre =  function  (req, res,callback)
+{
+    utilities.logFile("PUT ReservaResetPre");
+   
+    var sentencia = "UPDATE gomaonis_maonibd.reservas set SI_PRE_ENVIADO = 0, FECHAPREENVIADO = null WHERE IDHOTEL = ? and IDRESERVA = ?";
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ReservaResetPre")
+                conn.query (sentencia, [req.params.IDHOTEL, req.params.IDRESERVA],function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {                        
+                        utilities.logFile("Reserva actualizada");
+                    }
+                    else
+                    {
+                        utilities.logFile("Error" + err);
+                    }
+                });
+                
+                res.send(req.body);
+                
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);
+}
+
+exports.ReservaResetIn =  function  (req, res,callback)
+{
+    utilities.logFile("PUT ReservaResetIn");
+   
+    var sentencia = "UPDATE gomaonis_maonibd.reservas set SI_IN_ENVIADO = 0, FECHAINENVIADO = null WHERE IDHOTEL = ? and IDRESERVA = ?";
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ReservaResetIn")
+                conn.query (sentencia, [req.params.IDHOTEL, req.params.IDRESERVA],function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {                        
+                        utilities.logFile("Reserva actualizada");
+                    }
+                    else
+                    {
+                        utilities.logFile("Error" + err);
+                    }
+                });
+                
+                res.send(req.body);
+                
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);
 }

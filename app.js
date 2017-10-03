@@ -104,6 +104,9 @@ app.get('/Version',bbdd.Version, function(err,data){});
 //http://localhost:3000/ParametrosMailing/1
 app.get('/ParametrosMailing/:IDHOTEL',bbdd.ParametrosMailing, function(err,data){});
 
+app.put('/ReservaResetPre/:IDHOTEL/:IDRESERVA',bbdd.ReservaResetPre, function(err,data){});
+app.put('/ReservaResetIn/:IDHOTEL/:IDRESERVA',bbdd.ReservaResetIn, function(err,data){});
+
 http.createServer(app).listen(app.get('port'), function()
 {
   console.log('Express server listening on port ' + app.get('port'));
