@@ -51,13 +51,6 @@ app.get('/users', user.list);
 */
 require('./bbdd')
 
-
-app.get('/Version',function(req,res)
-{
-  res.send("2017 10 03");
-});
-
-
 app.get('/Reservas',function(req,res)
 {
   res.send("Url Maoni para recibir los post de las reservas V2");
