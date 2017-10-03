@@ -1,0 +1,13 @@
+10:31:44	GET UsuarioValido
+10:31:44	SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  'maoni' and PASSWORD = '99390cfd08236787dbe95558846798013dcd060a1d6e6b49ad10a08f30eaf201' and U.PERMISOWEBHASTA >= NOW()
+10:31:46	GET Hoteles By Usuario
+10:31:46	GET EncuestasResumenRango
+10:31:46	GET topResolutivos
+10:31:46	GET incidenciasLast5
+10:31:49	GET indicesSatisfaccion
+10:43:11	GET Reservas by IDHOTEL
+10:43:30	GET ParametrosMailing
+10:44:18	GET UsuarioValido
+10:44:18	SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  'maoni' and PASSWORD = '99390cfd08236787dbe95558846798013dcd060a1d6e6b49ad10a08f30eaf201' and U.PERMISOWEBHASTA >= NOW()
+10:44:24	GET UsuarioValido
+10:44:24	SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  'maoni' and PASSWORD = '99390cfd08236787dbe95558846798013dcd060a1d6e6b49ad10a08f30eaf201' and U.PERMISOWEBHASTA >= NOW()

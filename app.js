@@ -51,6 +51,13 @@ app.get('/users', user.list);
 */
 require('./bbdd')
 
+
+app.get('/Version',function(req,res)
+{
+  res.send("2017 10 03");
+});
+
+
 app.get('/Reservas',function(req,res)
 {
   res.send("Url Maoni para recibir los post de las reservas V2");
@@ -100,6 +107,9 @@ app.get('/IncidenciasNoNotificadas',bbdd.IncidenciasNoNotificadas, function(err,
 app.get('/Origen',bbdd.Origen, function(err,data){});
 
 app.get('/Version',bbdd.Version, function(err,data){});
+
+//http://localhost:3000/ParametrosMailing/1
+app.get('/ParametrosMailing/:IDHOTEL',bbdd.ParametrosMailing, function(err,data){});
 
 http.createServer(app).listen(app.get('port'), function()
 {

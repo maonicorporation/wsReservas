@@ -5,25 +5,13 @@ var DB = db.DB;
 var BaseRow = db.Row;
 var BaseTable = db.Table;
 var utilities = require("./utilities");
-/*
-var box = new DB({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'maonipass77',
-
-    database : 'maoniBD'
-
-
-});*/
+var config = require('./bbdd_config');
 
 var box = new DB({
-    host     : '52.16.112.227',
-    //host     : 'localhost',
-    user     : 'gomaonis_Aleix',
-    password : 'Aleix.2302',
-    database : 'gomaonis_maonibd'
-
-
+    host     : config.host,
+    user     : config.user,
+    password : config.password,
+    database : config.database
 });
 
 //Generador de keys
@@ -50,7 +38,7 @@ function keyExists (key)
 
 exports.Version =  function  (req, res, callback)
 {    
-    res.send("WSRESERVAS V 1.5");
+    res.send("WSRESERVAS V 2017 10 03");
     callback();
 }
 
@@ -519,8 +507,10 @@ exports.UsuarioValido =  function  (req, res,callback)
     utilities.logFile("GET UsuarioValido");
     
     var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
-    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOWEBHASTA >= NOW()";   
+    sentencia += " and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOWEBHASTA >= NOW()";   
     
+    utilities.logFile(sentencia);
+
     box.connect(function(conn, callback)
     {
         cps.seq([
@@ -554,8 +544,10 @@ exports.UsuarioValidoIos =  function  (req, res,callback)
     utilities.logFile("GET UsuarioValido");
     
     var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
-    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOIOSHASTA >= NOW()";    
+    sentencia += " and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOIOSHASTA >= NOW()";    
     
+    utilities.logFile(sentencia);
+
     box.connect(function(conn, callback)
     {
         cps.seq([
@@ -589,7 +581,9 @@ exports.UsuarioValidoAndroid =  function  (req, res,callback)
     utilities.logFile("GET UsuarioValido");
     
     var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
-    sentencia += "and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOANDROIDHASTA >= NOW()";    
+    sentencia += " and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOANDROIDHASTA >= NOW()";    
+    
+    utilities.logFile(sentencia);
     
     box.connect(function(conn, callback)
     {
@@ -846,4 +840,27 @@ exports.deleteReservaCli =  function  (req, res, callback)
             ], callback);
         }, callback);
     }
+}
+
+exports.ParametrosMailing =  function  (req, res,callback)
+{
+    utilities.logFile("GET ParametrosMailing");
+    
+    var sentencia = "SELECT * FROM gomaonis_maonibd.parametrosMailing where IDHOTEL = ?"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ParametrosMailing")
+                conn.query (sentencia,  [req.params.IDHOTEL], callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
 }
