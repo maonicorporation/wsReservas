@@ -846,7 +846,7 @@ exports.ParametrosMailing =  function  (req, res,callback)
 {
     utilities.logFile("GET ParametrosMailing");
     
-    var sentencia = "SELECT * FROM gomaonis_maonibd.parametrosMailing where IDHOTEL = ?"; 
+    var sentencia = "SELECT * FROM gomaonis_maonibd.parametrosMailing where IDHOTEL = ? order by TIPO"; 
     
     box.connect(function(conn, callback)
     {

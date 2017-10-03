@@ -1,4 +1,4 @@
 exports.host = 'localhost'          //'go.maoni.solutions'  'localhost'
 exports.user = 'gomaonis_Aleix';
-exports.password = 'Aleix.2302';
+exports.password = 'xxxxx';
 exports.database = 'gomaonis_maonibd';
