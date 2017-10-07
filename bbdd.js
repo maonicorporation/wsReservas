@@ -38,7 +38,7 @@ function keyExists (key)
 
 exports.Version =  function  (req, res, callback)
 {    
-    res.send("WSRESERVAS V 2017 10 03 B");
+    res.send("WSRESERVAS V 2017 10 07 A");
     callback();
 }
 
@@ -935,4 +935,50 @@ exports.ReservaResetIn =  function  (req, res,callback)
             }
         ], callback);
     }, callback);
+}
+
+exports.Idiomas =  function  (req, res,callback)
+{
+    utilities.logFile("GET Idiomas");
+    
+    var sentencia = "SELECT * FROM gomaonis_maonibd.idiomas order by ROWID"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query Idiomas")
+                conn.query (sentencia, callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
+}
+
+exports.Paises =  function  (req, res,callback)
+{
+    utilities.logFile("GET Paises");
+    
+    var sentencia = "SELECT * FROM gomaonis_maonibd.paises order by PAIS"; 
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query Paises")
+                conn.query (sentencia, callback);                    
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp); 
+            }
+        ], callback);
+    }, callback);   
 }
