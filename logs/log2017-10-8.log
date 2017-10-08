@@ -1,0 +1,18 @@
+11:0:13	GET Reservas by IDHOTEL
+11:1:44	GET Reservas by IDHOTEL
+11:56:27	GET UsuariosByHotel
+11:56:29	ErrorError: ER_BAD_FIELD_ERROR: Unknown column 'IDHOTEL' in 'where clause'
+11:59:8	GET UsuariosByHotel
+11:59:9	GET UsuariosByHotel done
+11:59:36	GET UsuariosByHotel
+11:59:56	GET UsuariosByHotel done
+12:1:51	GET UsuariosByHotel
+12:2:8	GET UsuariosByHotel done
+12:2:14	GET UsuariosByHotel
+12:2:40	GET UsuariosByHotel done
+12:4:10	GET UsuariosByHotel
+12:4:20	GET UsuariosByHotel done
+12:6:55	GET UsuariosByHotel
+15:31:34	GET UsuariosByHotel
+15:31:52	GET UsuariosByHotel
+15:36:10	GET UsuariosByHotel

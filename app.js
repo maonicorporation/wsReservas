@@ -84,6 +84,8 @@ app.get('/IncidenciasPorSemana/:IDHOTEL/:SEMANADESDE/:SEMANAHASTA',bbdd.incidenc
 app.get('/Usuarios/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValido, function(err,data){});
 app.get('/UsuariosIos/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValidoIos, function(err,data){});
 app.get('/UsuariosAndroid/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValidoAndroid, function(err,data){});
+app.get('/UsuariosByHotel/:IDHOTEL',bbdd.UsuariosByHotel, function(err,data){});
+app.get('/Usuario/:IDUSUARIO',bbdd.Usuario, function(err,data){});
 
 app.get('/Hoteles/:IDUSUARIO',bbdd.HotelesByUsuario, function(err,data){});
 //app.get('/Incidencias',bbdd.listaIncidenciaByHotel, function(err,data){});
@@ -106,6 +108,8 @@ app.get('/ParametrosMailing/:IDHOTEL',bbdd.ParametrosMailing, function(err,data)
 
 app.put('/ReservaResetPre/:IDHOTEL/:IDRESERVA',bbdd.ReservaResetPre, function(err,data){});
 app.put('/ReservaResetIn/:IDHOTEL/:IDRESERVA',bbdd.ReservaResetIn, function(err,data){});
+app.put('/ReservaSetIdioma/:IDHOTEL/:IDRESERVA/:ISO_IDIOMA',bbdd.ReservaSetIdioma, function(err,data){});
+app.put('/ReservaSetPais/:IDHOTEL/:IDRESERVA/:ISO_PAIS',bbdd.ReservaSetPais, function(err,data){});
 
 app.get('/Idiomas',bbdd.Idiomas, function(err,data){});
 app.get('/Paises',bbdd.Paises, function(err,data){});

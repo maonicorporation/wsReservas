@@ -1,2 +1,6 @@
 10:7:9	GET Idiomas
 10:7:17	GET Paises
+16:42:27	PUT ReservaSetIdioma
+16:42:35	Reserva actualizada
+16:43:43	PUT ReservaSetPais
+16:43:50	Reserva actualizada

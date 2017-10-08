@@ -7,11 +7,14 @@ var BaseTable = db.Table;
 var utilities = require("./utilities");
 var config = require('./bbdd_config');
 
+//https://stackoverflow.com/questions/23571110/nodejs-responded-mysql-timezone-is-different-when-i-fetch-directly-from-mysql
+
 var box = new DB({
     host     : config.host,
     user     : config.user,
     password : config.password,
-    database : config.database
+    database : config.database,
+    timezone : 'utc'
 });
 
 //Generador de keys
@@ -38,7 +41,7 @@ function keyExists (key)
 
 exports.Version =  function  (req, res, callback)
 {    
-    res.send("WSRESERVAS V 2017 10 07 A");
+    res.send("WSRESERVAS V 2017 10 08 A");
     callback();
 }
 
@@ -160,7 +163,7 @@ exports.getReservas =  function  (req, res,callback)
 {
     utilities.logFile("GET Reservas by IDHOTEL");
     
-    var sentencia = "SELECT * FROM gomaonis_maonibd.reservas where IDHOTEL = ? AND ENTRADA > ? ORDER BY ROWID DESC"; 
+    var sentencia = "SELECT * FROM gomaonis_maonibd.reservas where IDHOTEL = ? AND ENTRADA >= ? ORDER BY ROWID DESC"; 
     
     box.connect(function(conn, callback)
     {
@@ -620,9 +623,7 @@ exports.HotelesByUsuario =  function  (req, res,callback)
    // console.log(req.body);
     
     var sentencia = "SELECT E.DESCEMPRESA, H.* FROM gomaonis_maonibd.usuarioshoteles U INNER JOIN gomaonis_maonibd.hoteles H on H.IDHOTEL = U.IDHOTEL INNER JOIN gomaonis_maonibd.empresas E on E.IDEMPRESA = H.IDEMPRESA WHERE U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
-  
-  
-    
+
     box.connect(function(conn, callback)
     {
         cps.seq([
@@ -645,6 +646,52 @@ exports.HotelesByUsuario =  function  (req, res,callback)
     }, callback);   
 }
 
+exports.UsuariosByHotel =  function  (req, res,callback)
+{
+    utilities.logFile("GET UsuariosByHotel");
+    
+    var sentencia = "SELECT U.* FROM gomaonis_maonibd.usuarios U INNER JOIN gomaonis_maonibd.usuarioshoteles UH on U.IDUSUARIO = UH.IDUSUARIO and UH.IDHOTEL = ?";
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query UsuariosByHotel");
+                conn.query (sentencia, [req.params.IDHOTEL], callback);
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp)
+            }
+        ], callback);
+    }, callback);  
+}
+
+exports.Usuario =  function  (req, res,callback)
+{
+    utilities.logFile("GET UsuariosByHotel");
+    
+    var sentencia = "SELECT ROWID,IDUSUARIO,DESCUSUARIO,CARGO,NIVEL,SIACTIVO,EMAIL,PERMISOWEBHASTA,PERMISOANDROIDHASTA,PERMISOIOSHASTA FROM gomaonis_maonibd.usuarios WHERE IDUSUARIO = ?";
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query UsuariosByHotel");
+                conn.query (sentencia, [req.params.IDUSUARIO], callback);
+            },
+            function(resp, cb) 
+            {
+                conn.release();
+                res.send(resp)
+            }
+        ], callback);
+    }, callback);  
+}
+
 exports.Origen =  function  (req, res,callback)
 {    
     var sentencia = "SELECT * FROM gomaonis_maonibd.ORIGEN order by IDORIGEN"; 
@@ -659,7 +706,7 @@ exports.Origen =  function  (req, res,callback)
             },
             function(resp, cb) 
             {
-               conn.release();
+                conn.release();
                 res.send(resp);
             }
         ], callback);
@@ -914,6 +961,78 @@ exports.ReservaResetIn =  function  (req, res,callback)
             {
                 console.log("query ReservaResetIn")
                 conn.query (sentencia, [req.params.IDHOTEL, req.params.IDRESERVA],function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {                        
+                        utilities.logFile("Reserva actualizada");
+                    }
+                    else
+                    {
+                        utilities.logFile("Error" + err);
+                    }
+                });
+                
+                res.send(req.body);
+                
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);
+}
+
+exports.ReservaSetIdioma =  function  (req, res,callback)
+{
+    utilities.logFile("PUT ReservaSetIdioma");
+   
+    var sentencia = "UPDATE gomaonis_maonibd.reservas set ISO_IDIOMA = ? WHERE IDHOTEL = ? and IDRESERVA = ?";
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ReservaSetIdioma")
+                conn.query (sentencia, [req.params.ISO_IDIOMA, req.params.IDHOTEL, req.params.IDRESERVA],function (err)
+                {
+                    conn.release();
+                    if (!err)
+                    {                        
+                        utilities.logFile("Reserva actualizada");
+                    }
+                    else
+                    {
+                        utilities.logFile("Error" + err);
+                    }
+                });
+                
+                res.send(req.body);
+                
+            },
+            function(res, cb) 
+            {
+                callback (null, JSON.stringify (res));
+            }
+        ], callback);
+    }, callback);
+}
+
+exports.ReservaSetPais =  function  (req, res,callback)
+{
+    utilities.logFile("PUT ReservaSetPais");
+   
+    var sentencia = "UPDATE gomaonis_maonibd.reservas set ISO_PAIS = ? WHERE IDHOTEL = ? and IDRESERVA = ?";
+    
+    box.connect(function(conn, callback)
+    {
+        cps.seq([
+            function(_, callback)
+            {
+                console.log("query ReservaSetPais")
+                conn.query (sentencia, [req.params.ISO_PAIS, req.params.IDHOTEL, req.params.IDRESERVA],function (err)
                 {
                     conn.release();
                     if (!err)
