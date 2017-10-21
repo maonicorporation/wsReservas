@@ -86,8 +86,11 @@ app.get('/UsuariosIos/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValidoIos, function(err,
 app.get('/UsuariosAndroid/:IDUSUARIO/:PASSWORD',bbdd.UsuarioValidoAndroid, function(err,data){});
 app.get('/UsuariosByHotel/:IDHOTEL',bbdd.UsuariosByHotel, function(err,data){});
 app.get('/Usuario/:IDUSUARIO',bbdd.Usuario, function(err,data){});
-
 app.get('/Hoteles/:IDUSUARIO',bbdd.HotelesByUsuario, function(err,data){});
+
+//http://localhost:3000/Usuario/7604320/maoni
+//put:{"CARGO":"Cargo modificado 2"}
+app.put('/Usuario/:SESSIONKEY/:IDUSUARIO',bbdd.updateUsuario, function(err,data){});
 //app.get('/Incidencias',bbdd.listaIncidenciaByHotel, function(err,data){});
 
 app.post('/EncuestaOk',bbdd.addEncuestaOk, function(err,data){});

@@ -1,0 +1,14 @@
+13:25:45	PUT updateUsuario
+13:25:58	ACCESO NO AUTORIZADO A updateUsuario
+13:27:58	PUT updateUsuario
+13:28:17	ACCESO SÍ AUTORIZADO A updateUsuario
+13:28:30	ErrorError: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ROWID = NULL' at line 1
+13:29:22	PUT updateUsuario
+13:29:29	ACCESO SÍ AUTORIZADO A updateUsuario
+13:29:32	ErrorError: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE IDUSUARIO = NULL' at line 1
+13:29:48	PUT updateUsuario
+13:30:8	ACCESO SÍ AUTORIZADO A updateUsuario
+13:30:12	ErrorError: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE IDUSUARIO = 'maoni'' at line 1
+13:31:35	PUT updateUsuario
+13:31:43	ACCESO SÍ AUTORIZADO A updateUsuario
+13:31:44	Usuario actualizad

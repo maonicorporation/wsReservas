@@ -41,7 +41,7 @@ function keyExists (key)
 
 exports.Version =  function  (req, res, callback)
 {    
-    res.send("WSRESERVAS V 2017 10 08 A");
+    res.send("WSRESERVAS V 2017 10 21 A");
     callback();
 }
 
@@ -509,7 +509,7 @@ exports.UsuarioValido =  function  (req, res,callback)
 {
     utilities.logFile("GET UsuarioValido");
     
-    var sentencia = "SELECT distinct DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where U.IDUSUARIO =  '" + req.params.IDUSUARIO + "'"; 
+    var sentencia = "SELECT distinct U.IDUSUARIO, DESCUSUARIO, E.IDEMPRESA, E.DESCEMPRESA FROM usuarios U inner join usuarioshoteles UO on UO.IDUSUARIO = U.IDUSUARIO inner join hoteles H on H.IDHOTEL = UO.IDHOTEL inner join empresas E on E.IDEMPRESA = H.IDEMPRESA where (U.IDUSUARIO = '" + req.params.IDUSUARIO + "' or U.EMAIL = '" + req.params.IDUSUARIO + "')"; 
     sentencia += " and PASSWORD = '" + req.params.PASSWORD + "' and U.PERMISOWEBHASTA >= NOW()";   
     
     utilities.logFile(sentencia);
@@ -690,6 +690,52 @@ exports.Usuario =  function  (req, res,callback)
             }
         ], callback);
     }, callback);  
+}
+
+exports.updateUsuario =  function  (req, res,callback)
+{
+    utilities.logFile("PUT updateUsuario");
+    
+    if (keyExists(req.params.SESSIONKEY))
+    {
+        var sentencia = "UPDATE gomaonis_maonibd.usuarios set ? WHERE IDUSUARIO = ?" ;
+
+        utilities.logFile("ACCESO SÍ AUTORIZADO A updateUsuario");
+
+        box.connect(function(conn, callback)
+        {
+            cps.seq([
+                function(_, callback)
+                {
+                    console.log("query updateUsuario")
+                    conn.query (sentencia, [req.body, req.params.IDUSUARIO],function (err)
+                    {
+                        conn.release();
+                        if (!err)
+                        {                        
+                            utilities.logFile("Usuario actualizado");
+                        }
+                        else
+                        {
+                            utilities.logFile("Error" + err);
+                        }
+                    });
+                    
+                    res.send(req.body);
+                    
+                },
+                function(res, cb) 
+                {
+                    callback (null, JSON.stringify (res));
+                }
+            ], callback);
+        }, callback);
+    }
+    else
+    {
+        utilities.logFile("ACCESO NO AUTORIZADO A updateUsuario");
+        callback ("Acceso no autorizado", null);
+    }
 }
 
 exports.Origen =  function  (req, res,callback)

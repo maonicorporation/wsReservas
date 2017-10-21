@@ -19,9 +19,9 @@ function logFile(mess)
     var fpath = __dirname + "/logs/" + "log" + yyyy + "-" + mm + "-" + dd + ".log";
     
     fs.appendFile(fpath, fmess, function (err)
-    {        
-        console.dir(fmess2);
+    {
     });
+    console.dir(fmess2);
 }
 
 function servefile (res, filename)
